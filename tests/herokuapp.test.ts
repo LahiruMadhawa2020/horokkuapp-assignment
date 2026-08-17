@@ -1,4 +1,4 @@
-import { BrowserContext, chromium, Page, test } from '@playwright/test';
+import { BrowserContext, Page, test } from '@playwright/test';
 import { HomePage } from '../src/pages/HomePage';
 import { CheckBoxesPage } from '../src/pages/CheckBoxesPage';
 import { DropDownPage } from '../src/pages/DropDownPage';
@@ -40,18 +40,27 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
   test.beforeEach(async () => {
     // test.step('Navigate to the home page', async () => {});
     await homePage.navigateToHomePage('/');
-    await homePage.assertHomePageTitleIsVisible();    
+    await homePage.assertHomePageTitleIsVisible();      
   });
 
-  test('verify the checkboxes functionality @checkboxes', async () => {   
+  test('tc01 - verify the checkboxes functionality @checkboxes', async ({ browser }, testInfo) => {  
+    const tc01_screenshot_homepage_navigation = await page.screenshot();
+    await testInfo.attach('tc01_screenshot_homepage_navigation', { body: tc01_screenshot_homepage_navigation, contentType: 'image/png' });
+    
     // test.step('Navigate to the checkboxes page', async () => {});
     await homePage.waitForCheckBoxesLink();
     await homePage.clickCheckBoxesLink();
+
+    const tc01_screenshot_checkBoxesPage_Initial = await page.screenshot();
+    await testInfo.attach('tc01_screenshot_checkBoxesPage_Initial', { body: tc01_screenshot_checkBoxesPage_Initial, contentType: 'image/png' });
     
     // test.step('Verify the first checkboxes functionality', async () => {});
     await checkboxesPage.waitForFirstCheckbox();
     await checkboxesPage.checkFirstCheckbox();
     await checkboxesPage.assertFirstCheckboxChecked();
+
+    const tc01_screenshot_checkBoxe_checked = await page.screenshot();
+    await testInfo.attach('tc01_screenshot_checkBoxe_checked', { body: tc01_screenshot_checkBoxe_checked, contentType: 'image/png' });    
     
     // test.step('Verify the second checkboxes functionality', async () => {});
     await checkboxesPage.waitForSecondCheckbox();
@@ -60,9 +69,15 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
 
     // test.step('Navigate back to the home page', async () => {});
     await checkboxesPage.assertSecondCheckboxUnchecked();
+
+    const tc01_screenshot_checkBox_unchecked = await page.screenshot();
+    await testInfo.attach('tc01_screenshot_checkBox_unchecked', { body: tc01_screenshot_checkBox_unchecked, contentType: 'image/png' });
   });
 
-  test('verify dropdown functionality @dropdown', async () => {
+  test('tc02 - verify dropdown functionality @dropdown', async ({ browser }, testInfo) => {
+    const tc02_screenshot_homepage_navigation = await page.screenshot();
+    await testInfo.attach('tc02_screenshot_homepage_navigation', { body: tc02_screenshot_homepage_navigation, contentType: 'image/png' });
+
     await homePage.waitForDropDownLink();
     await homePage.clickDropDownLink();
 
@@ -71,52 +86,96 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
     
     await dropDownPage.waitForDropDown();
     await dropDownPage.assertDropDownIsVisible();  
+
+    const tc02_screenshot_dropDownPage_initial = await page.screenshot();
+    await testInfo.attach('tc02_screenshot_dropDownPage_initial', { body: tc02_screenshot_dropDownPage_initial, contentType: 'image/png' });
     
     await dropDownPage.selectDropDownValue();
-    await dropDownPage.assertSelectedDropDownValue();      
+    await dropDownPage.assertSelectedDropDownValue(); 
+    
+    const tc02_screenshot_dropDown_selected = await page.screenshot();
+    await testInfo.attach('tc02_screenshot_dropDown_selected', { body: tc02_screenshot_dropDown_selected, contentType: 'image/png' });
   });
 
-  test('verify entry Ad functionality @entryad', async () => {
+  test('tc03 - verify entry Ad functionality @entryad', async ({ browser }, testInfo) => {
+    const tc03_screenshot_homepage_navigation = await page.screenshot();
+    await testInfo.attach('tc03_screenshot_homepage_navigation', { body: tc03_screenshot_homepage_navigation, contentType: 'image/png' });
+
     await homePage.waitForEntryAdLink();
     await homePage.clickEntryAdLink();
 
     await entryAdPage.waitForEntryAdPopup();
     await entryAdPage.assertEntryAdPopIsVisible();
+
+    const tc03_screenshot_entryAdPage_initial = await page.screenshot();
+    await testInfo.attach('tc03_screenshot_entryAdPage_initial', { body: tc03_screenshot_entryAdPage_initial, contentType: 'image/png' });
+
     await entryAdPage.clickCloseButtonInEntryAdPopup();
 
     await entryAdPage.waitForEntryAdPageTitle();
     await entryAdPage.assertEntryAdPageTitleIsVisible();
+
+    const tc03_screenshot_entryAdPage_Tite_Last = await page.screenshot();
+    await testInfo.attach('tc03_screenshot_entryAdPage_Title_Last', { body: tc03_screenshot_entryAdPage_Tite_Last, contentType: 'image/png' });
   });
 
-  test('verify add or remove Elements functionality @addorremoveelements', async () => {
+  test('tc04 - verify add or remove Elements functionality @addorremoveelements', async ({ browser }, testInfo) => {
+    const tc04_screenshot_homepage_navigation = await page.screenshot();
+    await testInfo.attach('tc04_screenshot_homepage_navigation', { body: tc04_screenshot_homepage_navigation, contentType: 'image/png' });
+
     await homePage.waitForAddOrRemoveElementsLink();
     await homePage.clickAddOrRemoveElementsLink();
     
     await addOrRemoveElementsPage.waitForAddOrRemoveElementsTitle();
     await addOrRemoveElementsPage.assertAddOrRemoveElementsTitleIsVisible();
     await addOrRemoveElementsPage.assertInitialButtonVisibility();
+
+    const tc04_screenshot_AddRemovepage_initial = await page.screenshot();
+    await testInfo.attach('tc04_screenshot_AddRemovepage_initial', { body: tc04_screenshot_AddRemovepage_initial, contentType: 'image/png' });
+
     await addOrRemoveElementsPage.clickAddElementsButton();
     await addOrRemoveElementsPage.assertDeleteButtonIsVisible();
+
+    const tc04_screenshot_AddRemovepage_ClickAdd = await page.screenshot();
+    await testInfo.attach('tc04_screenshot_AddRemovepage_ClickAdd', { body: tc04_screenshot_AddRemovepage_ClickAdd, contentType: 'image/png' });
+
     await addOrRemoveElementsPage.clickDeleteButton();
     await addOrRemoveElementsPage.assertDeleteButtonIsNotVisible();
+
+    const tc04_screenshot_AddRemovepage_ClickDelete = await page.screenshot();
+    await testInfo.attach('tc04_screenshot_AddRemovepage_ClickDelete', { body: tc04_screenshot_AddRemovepage_ClickDelete, contentType: 'image/png' });
   });
 
-  test('verify form authentication functionality @formauthentication', async () => {
+  test('tc05 - verify form authentication functionality @formauthentication', async ({ browser }, testInfo) => {
+    const tc05_screenshot_homepage_navigation = await page.screenshot();
+    await testInfo.attach('tc05_screenshot_homepage_navigation', { body: tc05_screenshot_homepage_navigation, contentType: 'image/png' });
+
     await homePage.waitForFormAuthenticationLink();
     await homePage.clickFormAuthenticationLink();
+
+    const tc05_screenshot_FormAuth_initial = await page.screenshot();
+    await testInfo.attach('tc05_screenshot_FormAuth_initial', { body: tc05_screenshot_FormAuth_initial, contentType: 'image/png' });
     
     await formAuthenticationPage.waitForUsernameInput();
-    await formAuthenticationPage.enterUsername('tomsmith');
+    await formAuthenticationPage.enterUsername(process.env.FORMAUTHENTICATIONUSERNAME || '');
     await formAuthenticationPage.waitForPasswordInput();
-    await formAuthenticationPage.enterPassword('SuperSecretPassword!');
+    await formAuthenticationPage.enterPassword(process.env.FORMAUTHENTICATIONPASSWORD || '');
     await formAuthenticationPage.waitForLoginButton();
     await formAuthenticationPage.clickLoginButton();
     await formAuthenticationPage.waitForLoginSuccessMessage();
     await formAuthenticationPage.assertLoginSuccessMessage();
+
+    const tc05_screenshot_FormAuth_login = await page.screenshot();
+    await testInfo.attach('tc05_screenshot_FormAuth_login', { body: tc05_screenshot_FormAuth_login, contentType: 'image/png' });
+
     await formAuthenticationPage.waitForLogoutButton();
     await formAuthenticationPage.clickLogoutButton();
     await formAuthenticationPage.waitForLogoutSuccessMessage();
     await formAuthenticationPage.assertLogoutSuccessMessage();
+
+    const tc05_screenshot_FormAuth_logout = await page.screenshot();
+    await testInfo.attach('tc05_screenshot_FormAuth_logout', { body: tc05_screenshot_FormAuth_logout, contentType: 'image/png' });
+
     await formAuthenticationPage.waitForLoginPageTitle();
     await formAuthenticationPage.assertLoginPageTitleIsVisible();
   });

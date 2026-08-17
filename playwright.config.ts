@@ -8,16 +8,18 @@ dotenvExpand.expand(env);
 
 export default defineConfig({
   testDir: './tests',
+  // timeout: 30 * 5000,
+  // expect: { timeout: 20000 },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 3 : undefined,
   reporter: 'html',
   use: {
     trace: 'retain-on-failure',
-    video: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    baseURL: process.env.BASE_URL || 'https://the-internet.herokuapp.com/',
+    video: 'on',
+    screenshot: 'on',
+    baseURL: process.env.BASEURL || 'https://the-internet.herokuapp.com',
   },
 
   projects: [
@@ -25,13 +27,13 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
 });
