@@ -1,0 +1,18 @@
+{
+  "name": "horokkuapp-assignment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.59.0",
+    "@types/node": "^26.2.0",
+    "dotenv": "^17.4.2",
+    "dotenv-expand": "^1000.0.0",
+    "typescript": "^7.0.2",
+    "winston": "^3.19.0"
+  }
+}
