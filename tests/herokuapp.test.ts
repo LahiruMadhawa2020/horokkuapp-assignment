@@ -3,6 +3,8 @@ import { HomePage } from '../src/pages/HomePage';
 import { CheckBoxesPage } from '../src/pages/CheckBoxesPage';
 import { DropDownPage } from '../src/pages/DropDownPage';
 import { EntryAdPage } from '../src/pages/EntryAdPage';
+import { AddOrRemoveElementsPage } from '../src/pages/AddOrRemoveElementsPage';
+import { FormAuthenticationPage } from '../src/pages/FormAuthenticationPage';
 
 const logger = require("../src/utils/logger");
 
@@ -14,9 +16,10 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
   let checkboxesPage: CheckBoxesPage;
   let dropDownPage: DropDownPage;
   let entryAdPage: EntryAdPage;
+  let addOrRemoveElementsPage: AddOrRemoveElementsPage;
+  let formAuthenticationPage: FormAuthenticationPage;
 
-  test.beforeAll(async ({ browser }) => {
-    browser = await chromium.launch();
+  test.beforeAll(async ({ browser }) => {    
     context = await browser.newContext({
         recordVideo: {
             dir: `./test-results/videos/`,
@@ -30,6 +33,8 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
     checkboxesPage = new CheckBoxesPage(page);
     dropDownPage = new DropDownPage(page);
     entryAdPage = new EntryAdPage(page);
+    addOrRemoveElementsPage = new AddOrRemoveElementsPage(page);
+    formAuthenticationPage = new FormAuthenticationPage(page);
   });
 
   test.beforeEach(async () => {
@@ -38,7 +43,7 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
     await homePage.assertHomePageTitleIsVisible();    
   });
 
-  test('verify the checkboxes functionality', async () => {   
+  test('verify the checkboxes functionality @checkboxes', async () => {   
     // test.step('Navigate to the checkboxes page', async () => {});
     await homePage.waitForCheckBoxesLink();
     await homePage.clickCheckBoxesLink();
@@ -57,7 +62,7 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
     await checkboxesPage.assertSecondCheckboxUnchecked();
   });
 
-  test('verify dropdown functionality', async () => {
+  test('verify dropdown functionality @dropdown', async () => {
     await homePage.waitForDropDownLink();
     await homePage.clickDropDownLink();
 
@@ -71,30 +76,60 @@ test.describe("Heroku App Functional Component Testing @smoke", () => {
     await dropDownPage.assertSelectedDropDownValue();      
   });
 
-  test('verify entry Ad functionality', async () => {
+  test('verify entry Ad functionality @entryad', async () => {
     await homePage.waitForEntryAdLink();
     await homePage.clickEntryAdLink();
 
     await entryAdPage.waitForEntryAdPopup();
     await entryAdPage.assertEntryAdPopIsVisible();
     await entryAdPage.clickCloseButtonInEntryAdPopup();
-    
+
     await entryAdPage.waitForEntryAdPageTitle();
     await entryAdPage.assertEntryAdPageTitleIsVisible();
-  })
+  });
+
+  test('verify add or remove Elements functionality @addorremoveelements', async () => {
+    await homePage.waitForAddOrRemoveElementsLink();
+    await homePage.clickAddOrRemoveElementsLink();
+    
+    await addOrRemoveElementsPage.waitForAddOrRemoveElementsTitle();
+    await addOrRemoveElementsPage.assertAddOrRemoveElementsTitleIsVisible();
+    await addOrRemoveElementsPage.assertInitialButtonVisibility();
+    await addOrRemoveElementsPage.clickAddElementsButton();
+    await addOrRemoveElementsPage.assertDeleteButtonIsVisible();
+    await addOrRemoveElementsPage.clickDeleteButton();
+    await addOrRemoveElementsPage.assertDeleteButtonIsNotVisible();
+  });
+
+  test('verify form authentication functionality @formauthentication', async () => {
+    await homePage.waitForFormAuthenticationLink();
+    await homePage.clickFormAuthenticationLink();
+    
+    await formAuthenticationPage.waitForUsernameInput();
+    await formAuthenticationPage.enterUsername('tomsmith');
+    await formAuthenticationPage.waitForPasswordInput();
+    await formAuthenticationPage.enterPassword('SuperSecretPassword!');
+    await formAuthenticationPage.waitForLoginButton();
+    await formAuthenticationPage.clickLoginButton();
+    await formAuthenticationPage.waitForLoginSuccessMessage();
+    await formAuthenticationPage.assertLoginSuccessMessage();
+    await formAuthenticationPage.waitForLogoutButton();
+    await formAuthenticationPage.clickLogoutButton();
+    await formAuthenticationPage.waitForLogoutSuccessMessage();
+    await formAuthenticationPage.assertLogoutSuccessMessage();
+    await formAuthenticationPage.waitForLoginPageTitle();
+    await formAuthenticationPage.assertLoginPageTitleIsVisible();
+  });
 
   test.afterEach(async ({ browser }, testInfo) => {     
    await homePage.navigateToHomePage('/');   
    // Capture the test execution results status after every test
    if (testInfo.status !== testInfo.expectedStatus)
     logger.info(`${testInfo.title} did not run as expected!`);
-  })
+  });
     
   test.afterAll(async ({ browser }) => {
       await page.close();          
-      await context.close();
-      await browser.close();        
-  })
+      await context.close();      
+  });
 });
-
-

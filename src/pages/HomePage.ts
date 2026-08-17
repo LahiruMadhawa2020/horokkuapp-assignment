@@ -6,6 +6,8 @@ export class HomePage {
   readonly titleHomePage: Locator;
   readonly linkDropDown: Locator;
   readonly linkEntryAd: Locator;
+  readonly linkAddOrRemoveElements: Locator;
+  readonly linkFormAuthentication: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -13,6 +15,8 @@ export class HomePage {
     this.titleHomePage = page.getByRole('heading', { name: 'Welcome to the-internet' });
     this.linkDropDown = page.getByRole('link', { name: 'Dropdown' });
     this.linkEntryAd = page.getByRole('link', { name: 'Entry Ad' });
+    this.linkAddOrRemoveElements = page.getByRole('link', { name: 'Add/Remove Elements' });
+    this.linkFormAuthentication = page.getByRole('link', { name: 'Form Authentication' });
   }
 
   async navigateToHomePage(url: string) {
@@ -47,5 +51,21 @@ export class HomePage {
 
   async clickEntryAdLink() {
     await this.linkEntryAd.click();
+  }
+
+  async waitForAddOrRemoveElementsLink() {
+    await this.linkAddOrRemoveElements.waitFor({ state: "visible" });    
+  }
+
+  async clickAddOrRemoveElementsLink() {
+    await this.linkAddOrRemoveElements.click();
+  }
+
+  async waitForFormAuthenticationLink() {
+    await this.linkFormAuthentication.waitFor({ state: "visible" });
+  }
+
+  async clickFormAuthenticationLink() {
+    await this.linkFormAuthentication.click();
   }
 }
