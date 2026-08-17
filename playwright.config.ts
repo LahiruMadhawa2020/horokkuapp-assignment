@@ -17,7 +17,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
     video: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    // baseURL: process.env.BASE_URL || 'https://the-internet.herokuapp.com/',
+    baseURL: process.env.BASE_URL || 'https://the-internet.herokuapp.com/',
   },
 
   projects: [
